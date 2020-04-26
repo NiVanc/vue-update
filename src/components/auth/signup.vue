@@ -88,7 +88,7 @@ export default {
       };
       console.log(formData);
       axios
-        .post("https://vue-update-2b383.firebaseio.com/users.json", formData)
+        .post("/users.json", formData)
         .then(res => console.log(res))
         .catch(error => console.log(error));
     }

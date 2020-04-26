@@ -17,7 +17,7 @@ export default {
   },
   created() {
     axios
-      .get("https://vue-update-2b383.firebaseio.com/users.json")
+      .get("/users.json")
       .then(res => {
         console.log(res);
         const data = res.data;
