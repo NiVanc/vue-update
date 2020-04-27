@@ -65,9 +65,6 @@ export default {
       terms: false
     };
   },
-  created() {
-    console.log(process.env.VUE_APP_FIREBASEKEY);
-  },
   methods: {
     onAddHobby() {
       const newHobby = {
