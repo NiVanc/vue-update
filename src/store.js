@@ -9,11 +9,15 @@ export default new Vuex.Store({
   state: {
     idToken: null,
     userId: null,
+    user: null,
   },
   mutations: {
     authUser(state, userData) {
       state.idToken = userData.idToken;
       state.userId = userData.userId;
+    },
+    storeUser(state, user) {
+      state.user = user;
     },
   },
   actions: {
@@ -34,9 +38,12 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
-    storeUser({ commit }, userData) {
+    storeUser({ commit, state }, userData) {
+      if (!state.idToken) {
+        return;
+      }
       globalAxios
-        .post("/users.json", userData)
+        .post("/users.json" + "?auth=" + state.idToken, userData)
         .then((res) => {
           console.log(res);
         })
@@ -63,6 +70,30 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
+    fetchUser({ commit, state }) {
+      if (!state.idToken) {
+        return;
+      }
+      globalAxios
+        .get("/users.json" + "?auth=" + state.idToken)
+        .then((res) => {
+          console.log(res);
+          const data = res.data;
+          const users = [];
+          for (let key in data) {
+            const user = data[key];
+            user.id = key;
+            users.push(user);
+          }
+          console.log(users);
+          commit("storeUser", users[0]);
+        })
+        .catch((error) => console.log(error));
+    },
   },
-  getters: {},
+  getters: {
+    user(state) {
+      return state.user;
+    },
+  },
 });
