@@ -51,8 +51,6 @@
 </template>
 
 <script>
-import axios from "../../axios-auth";
-
 export default {
   data() {
     return {
@@ -87,14 +85,10 @@ export default {
         terms: this.terms
       };
       console.log(formData);
-      axios
-        .post(`/accounts:signUp?key=${process.env.VUE_APP_FIREBASEKEY}`, {
-          email: formData.email,
-          password: formData.password,
-          returnSecureToken: true
-        })
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
+      this.$store.dispatch("signup", {
+        email: formData.email,
+        password: formData.password
+      });
     }
   }
 };
