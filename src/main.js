@@ -6,7 +6,7 @@ import router from "./router";
 import store from "./store";
 
 axios.defaults.baseURL = "https://vue-update-2b383.firebaseio.com";
-axios.defaults.headers.common["Authorisation"] = "supersecret";
+// axios.defaults.headers.common["Authorisation"] = "supersecret";
 
 const reqInterceptor = axios.interceptors.request.use((config) => {
   console.log("Request Interceptor: ", config);

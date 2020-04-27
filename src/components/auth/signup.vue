@@ -65,6 +65,9 @@ export default {
       terms: false
     };
   },
+  created() {
+    console.log(process.env.VUE_APP_FIREBASEKEY);
+  },
   methods: {
     onAddHobby() {
       const newHobby = {
@@ -88,7 +91,11 @@ export default {
       };
       console.log(formData);
       axios
-        .post("/users.json", formData)
+        .post(`/accounts:signUp?key=${process.env.VUE_APP_FIREBASEKEY}`, {
+          email: formData.email,
+          password: formData.password,
+          returnSecureToken: true
+        })
         .then(res => console.log(res))
         .catch(error => console.log(error));
     }
