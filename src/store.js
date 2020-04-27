@@ -40,6 +40,7 @@ export default new Vuex.Store({
             userId: res.data.localId,
           });
           dispatch("storeUser", authData);
+          router.push("/dashboard");
         })
         .catch((error) => console.log(error));
     },
@@ -72,6 +73,7 @@ export default new Vuex.Store({
             idToken: res.data.idToken,
             userId: res.data.localId,
           });
+          router.push("dashboard");
         })
         .catch((error) => console.log(error));
     },
