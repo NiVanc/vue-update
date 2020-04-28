@@ -26,6 +26,11 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    setLogoutTimer({ commit, dispatch }, expirationTime) {
+      setTimeout(() => {
+        dispatch("logout");
+      }, expirationTime * 1000);
+    },
     signup({ commit, dispatch }, authData) {
       axios
         .post(`/accounts:signUp?key=${process.env.VUE_APP_FIREBASEKEY}`, {
@@ -40,6 +45,7 @@ export default new Vuex.Store({
             userId: res.data.localId,
           });
           dispatch("storeUser", authData);
+          dispatch("setLogoutTimer", res.data.expiresIn);
           router.push("/dashboard");
         })
         .catch((error) => console.log(error));
@@ -57,7 +63,7 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
-    login({ commit }, authData) {
+    login({ commit, dispatch }, authData) {
       axios
         .post(
           `/accounts:signInWithPassword?key=${process.env.VUE_APP_FIREBASEKEY}`,
@@ -73,6 +79,7 @@ export default new Vuex.Store({
             idToken: res.data.idToken,
             userId: res.data.localId,
           });
+          dispatch("setLogoutTimer", res.data.expiresIn);
           router.push("dashboard");
         })
         .catch((error) => console.log(error));
