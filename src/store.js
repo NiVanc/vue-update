@@ -45,7 +45,8 @@ export default new Vuex.Store({
             now.getTime() + res.data.expiresIn * 1000
           );
           localStorage.setItem("token", res.data.idToken);
-          localStorage.setItem("expiresIn", expirationDate);
+          localStorage.setItem("userId", res.data.localId);
+          localStorage.setItem("expirationDate", expirationDate);
           commit("authUser", {
             idToken: res.data.idToken,
             userId: res.data.localId,
@@ -86,7 +87,8 @@ export default new Vuex.Store({
             now.getTime() + res.data.expiresIn * 1000
           );
           localStorage.setItem("token", res.data.idToken);
-          localStorage.setItem("expiresIn", expirationDate);
+          localStorage.setItem("userId", res.data.localId);
+          localStorage.setItem("expirationDate", expirationDate);
           commit("authUser", {
             idToken: res.data.idToken,
             userId: res.data.localId,
