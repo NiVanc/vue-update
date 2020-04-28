@@ -45,11 +45,22 @@
           <h3>Add some Hobbies</h3>
           <button @click="onAddHobby" type="button">Add Hobby</button>
           <div class="hobby-list">
-            <div class="input" v-for="(hobbyInput, index) in hobbyInputs" :key="hobbyInput.id">
+            <div
+              class="input"
+              :class="{error: $v.hobbyInputs.$each[index].$error}"
+              v-for="(hobbyInput, index) in hobbyInputs"
+              :key="hobbyInput.id"
+            >
               <label :for="hobbyInput.id">Hobby #{{ index }}</label>
-              <input type="text" :id="hobbyInput.id" v-model="hobbyInput.value" />
+              <input
+                type="text"
+                :id="hobbyInput.id"
+                @blur="$v.hobbyInputs.$each[index].value.$touch()"
+                v-model="hobbyInput.value"
+              />
               <button @click="onDeleteHobby(hobbyInput.id)" type="button">X</button>
             </div>
+            <p v-if="!$v.hobbyInputs.required">You have to specify at least one hobby.</p>
           </div>
         </div>
         <div class="input inline" :class="{invalid: $v.terms.$invalid}">
@@ -103,6 +114,15 @@ export default {
     },
     confirmPassword: {
       sameAs: sameAs("password")
+    },
+    hobbyInputs: {
+      required,
+      $each: {
+        value: {
+          required,
+          minLength: minLength(3)
+        }
+      }
     },
     terms: {
       customRequiredUnless: (value, vm) =>
