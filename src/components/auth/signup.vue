@@ -52,8 +52,8 @@
             </div>
           </div>
         </div>
-        <div class="input inline">
-          <input type="checkbox" id="terms" v-model="terms" />
+        <div class="input inline" :class="{invalid: $v.terms.$invalid}">
+          <input type="checkbox" id="terms" @change="$v.terms.$touch()" v-model="terms" />
           <label for="terms">Accept Terms of Use</label>
         </div>
         <div class="submit">
@@ -67,6 +67,7 @@
 <script>
 import {
   required,
+  requiredUnless,
   email,
   numeric,
   minValue,
@@ -102,6 +103,10 @@ export default {
     },
     confirmPassword: {
       sameAs: sameAs("password")
+    },
+    terms: {
+      customRequiredUnless: (value, vm) =>
+        vm.country === "germany" ? true : value
     }
   },
   methods: {
@@ -173,11 +178,13 @@ export default {
   background-color: #eee;
 }
 
-.input.error label {
+.input.error label,
+.input.invalid label {
   color: red;
 }
 
-.input.error input {
+.input.error input,
+.input.invalid input {
   border: 1px solid red;
   background-color: rgb(255, 164, 164);
 }
