@@ -14,7 +14,7 @@ export default new Vuex.Store({
   },
   mutations: {
     authUser(state, userData) {
-      state.idToken = userData.idToken;
+      state.idToken = userData.token;
       state.userId = userData.userId;
     },
     storeUser(state, user) {
@@ -97,6 +97,22 @@ export default new Vuex.Store({
           router.push("dashboard");
         })
         .catch((error) => console.log(error));
+    },
+    tryAutoLogin({ commit }) {
+      const now = new Date();
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      const expirationDate = localStorage.getItem("expirationDate");
+      if (!token) {
+        return;
+      }
+      if (now >= expirationDate) {
+        return;
+      }
+      commit("authUser", {
+        token: token,
+        userdId: userId,
+      });
     },
     logout({ commit }) {
       commit("clearUserData");
